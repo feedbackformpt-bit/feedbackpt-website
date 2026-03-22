@@ -830,14 +830,14 @@ function toggleFaq(btn){
   document.querySelectorAll('.faq-item').forEach(function(el){el.classList.remove('open');});
   if(!was)item.classList.add('open');
 }
-var FORMSPREE_ID='meelbbdz';
+var MAKE_WEBHOOK='https://hook.eu1.make.com/sjvxdpfu9wgd226z26imr38a1imqageg';
 function enviarFormulario(){
   var nome=document.getElementById('f-nome').value.trim(),espaco=document.getElementById('f-espaco').value.trim(),email=document.getElementById('f-email').value.trim(),contactos=document.getElementById('f-contactos').value,msg=document.getElementById('f-msg').value.trim();
   if(!nome||!email){alert('Por favor preencha pelo menos o nome e o email.');return;}
   var btn=document.getElementById('f-submit');btn.disabled=true;btn.innerHTML='A enviar...';
-  fetch('https://formspree.io/f/'+FORMSPREE_ID,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({nome:nome,espaco:espaco||'-',email:email,contactos_diarios:contactos||'-',mensagem:msg||'-',_subject:'Pedido de Demo - FeedbackPT'})}).then(function(res){
+  fetch(MAKE_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:nome,espaco:espaco||'-',email:email,contactos_diarios:contactos||'-',mensagem:msg||'-'})}).then(function(res){
     if(res.ok){document.getElementById('form-success').style.display='block';btn.innerHTML='Pedido enviado ✓';['f-nome','f-espaco','f-email','f-contactos','f-msg'].forEach(function(id){document.getElementById(id).value='';});}
-    else{res.json().then(function(d){alert('Erro: '+(d.error||'tente novamente.'));btn.disabled=false;btn.innerHTML='Quero uma demo gratuita →';});}
+    else{alert('Erro ao enviar. Tente novamente.');btn.disabled=false;btn.innerHTML='Quero uma demo gratuita →';}
   }).catch(function(){alert('Erro de ligação.');btn.disabled=false;btn.innerHTML='Quero uma demo gratuita →';});
 }
 document.body.classList.add('anim-ready');
